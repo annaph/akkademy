@@ -1,15 +1,16 @@
 package com.akkademy
 
 import scala.concurrent.Await
+import scala.concurrent.Future
 import scala.concurrent.duration.DurationInt
 
 import org.scalatest.FunSpecLike
 import org.scalatest.Matchers
 
+import akka.pattern.ask
 import akka.actor.ActorSystem
 import akka.actor.Props
 import akka.util.Timeout
-import akka.pattern.ask
 
 class PongActorSpec extends FunSpecLike with Matchers {
 
@@ -20,19 +21,22 @@ class PongActorSpec extends FunSpecLike with Matchers {
 
   describe("Pong actor") {
     it("should respond with Pong") {
-      val future = pongActor ? "Ping"
+      val future = askActor("Ping")
       val result = Await.result(future.mapTo[String], 1 second)
 
       assert(result == "Pong")
     }
 
     it("should fail on unknown message") {
-      val future = pongActor ? "unknown message"
+      val future = askActor("unknown message")
 
       intercept[Exception] {
         Await.result(future.mapTo[String], 1 second)
       }
     }
   }
+
+  def askActor(message: String): Future[String] =
+    (pongActor ? message).mapTo[String]
 
 }
