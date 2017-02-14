@@ -1,2 +1,2 @@
 # akkademy-db
-Learning Akka
+Akka cache service
