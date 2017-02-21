@@ -65,13 +65,45 @@ class AskAndTellDemoSpec extends FunSpec with Matchers {
   }
 
   describe("tell demo") {
-    val cachProbe = TestProbe()
+    val cacheProbe = TestProbe()
     val httpClientProbe = TestProbe()
     val articleParserActor = system.actorOf(Props(classOf[ParsingActor]))
+    val tellDemoActor = system.actorOf(Props(
+      classOf[TellDemoArticleParser],
+      cacheProbe.ref.path.toString,
+      httpClientProbe.ref.path.toString,
+      articleParserActor.path.toString,
+      timeout))
 
     it("should provide parsed article") {
-      ???
+      val f = tellDemoActor ? ParseArticle("http://www.google.com")
+
+      cacheProbe.expectMsgType[GetRequest]
+      cacheProbe.reply(new Exception("no cache"))
+
+      httpClientProbe.expectMsgType[String]
+      httpClientProbe.reply(HttpResponse(Articles.article1))
+
+      cacheProbe.expectMsgType[SetRequest]
+
+      val parsedArticle = Await.result(f, 10 seconds)
+
+      parsedArticle.toString should include("I’ve been writing a lot in emacs lately")
+      parsedArticle.toString should not include ("<body>")
     }
+
+    it("should provide cached article") {
+      val f = tellDemoActor ? ParseArticle("http://www.google.com")
+
+      cacheProbe.expectMsgType[GetRequest]
+      cacheProbe.reply(ArticleExtractor.INSTANCE.getText(Articles.article1))
+
+      val parsedArticle = Await.result(f, 10 seconds)
+
+      parsedArticle.toString should include("I’ve been writing a lot in emacs lately")
+      parsedArticle.toString should not include ("<body>")  
+    }
+
   }
 
 }
