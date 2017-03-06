@@ -8,17 +8,17 @@ import com.akkademy.messages.SetRequest
 import akka.actor.ActorSystem
 import akka.testkit.TestActorRef
 
-class AkkademyDbSpec extends FunSpecLike with Matchers {
+class AkkademyCacheSpec extends FunSpecLike with Matchers {
 
   implicit val system = ActorSystem()
 
-  describe("akkademyDb") {
+  describe("akkademyCache") {
     describe("givenSetRequest") {
       it("should place key/value into map") {
-        val actorRef = TestActorRef(new AkkademyDb)
+        val actorRef = TestActorRef(new AkkademyCache)
         actorRef ! SetRequest("key", "value")
-        val akkademyDb = actorRef.underlyingActor
-        akkademyDb.map.get("key") should equal(Some("value"))
+        val akkademyCache = actorRef.underlyingActor
+        akkademyCache.map.get("key") should equal(Some("value"))
       }
     }
   }

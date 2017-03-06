@@ -8,7 +8,7 @@ import akka.actor.Actor
 import akka.actor.Status
 import akka.event.Logging
 
-class AkkademyDb extends Actor {
+class AkkademyCache extends Actor {
 
   val map = HashMap.empty[String, Object]
   val log = Logging(context.system, this)
