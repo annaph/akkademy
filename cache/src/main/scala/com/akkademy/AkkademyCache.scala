@@ -2,7 +2,9 @@ package com.akkademy
 
 import scala.collection.mutable.HashMap
 
-import com.akkademy.messages.{ GetRequest, SetRequest, KeyNotFoundException }
+import com.akkademy.messages.GetRequest
+import com.akkademy.messages.KeyNotFoundException
+import com.akkademy.messages.SetRequest
 
 import akka.actor.Actor
 import akka.actor.Status
@@ -14,11 +16,11 @@ class AkkademyCache extends Actor {
   val log = Logging(context.system, this)
 
   override def receive = {
-    case SetRequest(key, value) =>
+    case SetRequest(key, value, _) =>
       log.info(s"received SetRequest - key: ${key} value: ${value}")
       map.put(key, value)
       sender() ! Status.Success
-    case GetRequest(key) =>
+    case GetRequest(key, _) =>
       log.info(s"received GetRequest - key: ${key}")
       map.get(key) match {
         case None =>

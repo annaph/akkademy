@@ -1,4 +1,4 @@
-package com.akkademy
+package com.akkademy.messages
 
 import akka.actor.ActorRef
 
