@@ -23,8 +23,13 @@ lazy val cache = (project in file("cache"))
   .settings(commonDependencies)
   .dependsOn(messages)
 
+lazy val client = (project in file("client"))
+  .settings(commonSettings)
+  .settings(commonDependencies)
+  .dependsOn(messages)
+
 lazy val root = (project in file("."))
-	.aggregate(messages, cache)
+	.aggregate(messages, cache, client)
 	.settings(commonSettings)
 	.settings(
 		name := AkkademyBuild.prefixName + "root"
