@@ -27,6 +27,7 @@ lazy val client = (project in file("client"))
   .settings(commonSettings)
   .settings(commonDependencies)
   .dependsOn(messages)
+  .dependsOn(cache)
 
 lazy val root = (project in file("."))
 	.aggregate(messages, cache, client)
