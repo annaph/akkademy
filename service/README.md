@@ -1,2 +1,0 @@
-# akkademaid
-Akka service
