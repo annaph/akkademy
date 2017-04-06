@@ -15,3 +15,5 @@ case class KeyNotFoundException(key: String) extends Exception
 
 case class Connected()
 case class Disconnected()
+
+case class Flush()
