@@ -5,7 +5,11 @@ import scala.concurrent.Future
 import scala.util.Failure
 import scala.util.Success
 
+import com.akkademy.messages.ArticleBody
 import com.akkademy.messages.GetRequest
+import com.akkademy.messages.HttpResponse
+import com.akkademy.messages.ParseArticle
+import com.akkademy.messages.ParseHtmlArticle
 import com.akkademy.messages.SetRequest
 
 import akka.actor.Actor

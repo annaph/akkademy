@@ -1,5 +1,8 @@
 package com.akkademy
 
+import com.akkademy.messages.ArticleBody
+import com.akkademy.messages.ParseHtmlArticle
+
 import akka.actor.Actor
 import de.l3s.boilerpipe.extractors.ArticleExtractor
 

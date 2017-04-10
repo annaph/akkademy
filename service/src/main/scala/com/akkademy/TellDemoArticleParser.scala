@@ -2,7 +2,11 @@ package com.akkademy
 
 import java.util.concurrent.TimeoutException
 
+import com.akkademy.messages.ArticleBody
 import com.akkademy.messages.GetRequest
+import com.akkademy.messages.HttpResponse
+import com.akkademy.messages.ParseArticle
+import com.akkademy.messages.ParseHtmlArticle
 import com.akkademy.messages.SetRequest
 
 import akka.actor.Actor
@@ -39,11 +43,11 @@ class TellDemoArticleParser(
         case "timeout" =>
           senderRef ! Failure(new TimeoutException("timeout!"))
           context.stop(self)
+        case HttpResponse(htmlString) =>
+          articleParserActor ! ParseHtmlArticle(uri, htmlString)
         case body: String =>
           senderRef ! body
           context.stop(self)
-        case HttpResponse(htmlString) =>
-          articleParserActor ! ParseHtmlArticle(uri, htmlString)
         case ArticleBody(uri, body) =>
           cacheActor ! SetRequest(uri, body)
           senderRef ! body
