@@ -10,15 +10,15 @@ import com.akkademy.messages.GetRequest
 import com.akkademy.messages.HttpResponse
 import com.akkademy.messages.ParseArticle
 import com.akkademy.messages.SetRequest
+import com.typesafe.config.ConfigFactory
 
+import akka.pattern.ask
 import akka.actor.ActorSystem
 import akka.actor.Props
 import akka.actor.Status.Failure
-import akka.pattern.ask
 import akka.testkit.TestProbe
 import akka.util.Timeout
 import de.l3s.boilerpipe.extractors.ArticleExtractor
-import com.typesafe.config.ConfigFactory
 
 class AskAndTellDemoSpec extends FunSpec with Matchers {
 
@@ -28,7 +28,7 @@ class AskAndTellDemoSpec extends FunSpec with Matchers {
   describe("ask demo") {
     val cacheProbe = TestProbe()
     val httpClientProbe = TestProbe()
-    val articleParserActor = system.actorOf(Props(classOf[ParsingActor]))
+    val articleParserActor = system.actorOf(Props(classOf[ArticleParsingActor]))
     val askDemoActor = system.actorOf(Props(
       classOf[AskDemoArticleParser],
       cacheProbe.ref.path.toString,
@@ -70,7 +70,7 @@ class AskAndTellDemoSpec extends FunSpec with Matchers {
   describe("tell demo") {
     val cacheProbe = TestProbe()
     val httpClientProbe = TestProbe()
-    val articleParserActor = system.actorOf(Props(classOf[ParsingActor]))
+    val articleParserActor = system.actorOf(Props(classOf[ArticleParsingActor]))
     val tellDemoActor = system.actorOf(Props(
       classOf[TellDemoArticleParser],
       cacheProbe.ref.path.toString,

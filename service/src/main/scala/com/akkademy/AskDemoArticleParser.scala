@@ -9,7 +9,7 @@ import com.akkademy.messages.ArticleBody
 import com.akkademy.messages.GetRequest
 import com.akkademy.messages.HttpResponse
 import com.akkademy.messages.ParseArticle
-import com.akkademy.messages.ParseHtmlArticle
+import com.akkademy.messages.ParseHtmlArticleAsk
 import com.akkademy.messages.SetRequest
 
 import akka.actor.Actor
@@ -37,7 +37,7 @@ class AskDemoArticleParser(
 
           rawResult flatMap {
             case HttpResponse(htmlString) =>
-              articleParserActor ? ParseHtmlArticle(uri, htmlString)
+              articleParserActor ? ParseHtmlArticleAsk(uri, htmlString)
             case _ =>
               Future.failed(new Exception("unknown response"))
           }

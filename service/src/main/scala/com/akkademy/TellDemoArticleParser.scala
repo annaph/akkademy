@@ -38,13 +38,13 @@ class TellDemoArticleParser(
   }
 
   private def buildExtraActor(senderRef: ActorRef, uri: String): ActorRef = {
-    return context.actorOf(Props(new Actor {
+    return context.actorOf(Props(new Actor { s =>
       override def receive = {
         case "timeout" =>
           senderRef ! Failure(new TimeoutException("timeout!"))
           context.stop(self)
         case HttpResponse(htmlString) =>
-          articleParserActor ! ParseHtmlArticle(uri, htmlString)
+          articleParserActor ! ParseHtmlArticle(uri, htmlString, s.self)
         case body: String =>
           senderRef ! body
           context.stop(self)
