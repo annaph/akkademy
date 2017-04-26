@@ -23,7 +23,7 @@ object Main extends App {
 
   config match {
     case Success(c) =>
-      val system = ActorSystem("akkademyCache")
+      val system = ActorSystem("akkademyCache", c)
 
       system.actorOf(Props(classOf[AkkademyCache]), "akkademy-db")
       system.actorOf(Props(classOf[PongActor]), "pong")
